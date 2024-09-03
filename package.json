@@ -4,13 +4,14 @@
   "description": "School management app",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./app.js",
+    "start": "nodemon ./bin/www",
     "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "nodemon": "^1.18.3",
     "sequelize-cli": "^6.6.2"
   },

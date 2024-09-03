@@ -1,5 +1,6 @@
 var createError = require('http-errors');
-var express = require('express');
+const express = require('express');
+const morgan = require('morgan');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -7,6 +8,7 @@ var logger = require('morgan');
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
 
+// setup Routers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/usersRouter');
 var coursesRouter = require('./routes/coursesRouter');
@@ -26,15 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/courses', coursesRouter);
-
-// setup a friendly greeting for the root route
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to the REST API project!',
-  });
-});
 
 // send 404 if no other route matched
 app.use((req, res) => {
