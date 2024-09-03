@@ -5,6 +5,7 @@ A REST API for administering a school database with information about users and 
 In a future project, this REST API will be integrated with a front-end client built with React as part of a full-stack JavaScript application.
 
 ## Table of Contents
+
 - [School Database REST API](#school-database-rest-api)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
@@ -101,10 +102,12 @@ To set up the project, follow these steps:
 ## API Endpoints
 
 ### User Routes
+
 - **GET** `/api/users` - Returns all properties and values for the authenticated user.
 - **POST** `/api/users` - Creates a new user, sets the `Location` header to `/`, and returns a `201` HTTP status code.
 
 ### Course Routes
+
 - **GET** `/api/courses` - Returns all courses including the associated User object.
 - **GET** `/api/courses/:id` - Returns the specified course, including the associated User object.
 - **POST** `/api/courses` - Creates a new course.
@@ -112,22 +115,27 @@ To set up the project, follow these steps:
 - **DELETE** `/api/courses/:id` - Deletes the specified course.
 
 ## Built-In Validation
+
 - **User Registration:** Validates `firstName`, `lastName`, `emailAddress`, and `password`.
 - **Course Management:** Validates `title` and `description` for course creation and updates.
 
 ## Password Security
+
 User passwords are hashed using `bcrypt` before storage.
 
 ## Testing
+
 - Import the `RESTAPI.postman_collection.json` file into Postman to test API endpoints.
 - Run tests using the included Postman collection.
 
 ## Extra Credit Features
+
 - Ensures email addresses are valid and unique.
 - Filters out sensitive or unnecessary fields from the API responses.
 - Checks if the authenticated user is the owner of a course before allowing updates or deletions.
 
 ## Technologies Used
+
 - **Node.js** - JavaScript runtime environment.
 - **Express** - Web framework for Node.js.
 - **Sequelize** - ORM for handling the SQLite database.
@@ -135,9 +143,11 @@ User passwords are hashed using `bcrypt` before storage.
 - **Postman** - Tool for testing and exploring REST APIs.
 
 ## License
+
 This project is licensed under the MIT License - see the `LICENSE` file for details.
 
 ## Contact
+
 If you have any questions or need further clarification, feel free to reach out:
 
 - **GitHub:** [@greatxrider](https://github.com/greatxrider)
