@@ -38,10 +38,10 @@ class Database {
         VALUES
           (?, ?, ?, ?, datetime('now'), datetime('now'));
       `,
-      user.firstName,
-      user.lastName,
-      user.emailAddress,
-      user.password);
+        user.firstName,
+        user.lastName,
+        user.emailAddress,
+        user.password);
   }
 
   createCourse(course) {
@@ -52,11 +52,11 @@ class Database {
         VALUES
           (?, ?, ?, ?, ?, datetime('now'), datetime('now'));
       `,
-      course.userId,
-      course.title,
-      course.description,
-      course.estimatedTime,
-      course.materialsNeeded);
+        course.userId,
+        course.title,
+        course.description,
+        course.estimatedTime,
+        course.materialsNeeded);
   }
 
   async hashUserPasswords(users) {
