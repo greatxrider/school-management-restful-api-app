@@ -1,7 +1,7 @@
 {
   "name": "techdegree-fullstackjs-rest-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "School management app",
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./app.js",
@@ -11,14 +11,20 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.3",
+    "sequelize-cli": "^6.6.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
     "cross-env": "^7.0.2",
+    "debug": "~2.6.9",
     "express": "^4.17.1",
+    "http-errors": "~1.6.3",
     "morgan": "^1.10.0",
     "promise.prototype.finally": "^3.1.2",
-    "sqlite3": "^5.0.0"
+    "pug": "2.0.0-beta11",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
   }
 }
