@@ -18,48 +18,68 @@ function asyncHandler(cb) {
   };
 }
 
-// Route that returns a list of users.
-coursesRouter.get('/', asyncHandler(async (req, res) => {
-  const courses = await Course.findAll({
-    include: [
-      {
-        model: User,
-        as: 'user',
-      },
-    ],
-  });
-  res.status(200).json(courses);
-  console.log(courses.map(course => course.get({ plain: true })));
-}));
+coursesRouter.route('/')
+  .get(asyncHandler(async (req, res) => {
+    // Route that returns a list of courses.
+    const courses = await Course.findAll({
+      include: [
+        {
+          model: User,
+          as: 'user',
+        },
+      ],
+    });
+    res.status(200).json(courses);
+    console.log(courses.map(course => course.get({ plain: true })));
+  }))
+  .post(asyncHandler(async (req, res) => {
+    // Route that creates a new course.
+    await Course.create(req.body);
+    res.status(201).json({ message: 'Course successfully created!' });
+  }));
 
 // Route that returns the corresponding course including the user object associated with that course
-coursesRouter.get('/api/courses/:id', asyncHandler(async (req, res) => {
-  const course = await Course.findByPk(req.params.id, {
-    include: [
-      {
-        model: User,
-        as: 'user',
-      },
-    ],
-  });
-  res.status(200).json(course);
-}))
-
-// Route that creates a new user.
-coursesRouter.post('/', asyncHandler(async (req, res) => {
-  try {
-    await Course.create(req.body);
-    res.status(201).json({ message: 'Account successfully created!' });
-  } catch (error) {
-    console.log('ERROR: ', error.name);
-
-    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-      const errors = error.errors.map(err => err.message);
-      res.status(400).json({ errors });
+coursesRouter.route('/:id')
+  .get(asyncHandler(async (req, res) => {
+    const course = await Course.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+        },
+      ],
+    });
+    if (course) {
+      res.status(200).json(course);
     } else {
-      throw error;
+      res.status(404).json({ message: 'Course not found' });
     }
-  }
-}));
+  }))
+  .put(asyncHandler(async (req, res) => {
+    const course = await Course.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+        },
+      ],
+    });
+
+    if (course) {
+      await course.update(req.body);
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: 'Course not found' });
+    }
+  }))
+  .delete(asyncHandler(async (req, res) => {
+    const course = await Course.findByPk(req.params.id);
+    if (course) {
+      await course.destroy();
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: 'Course not found' });
+    }
+  }));
 
 module.exports = coursesRouter;
