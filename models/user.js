@@ -97,7 +97,10 @@ module.exports = (sequelize) => {
       },
       validate: {
         notNull: {
-          msg: 'Please re-enter password to confirm',
+          msg: 'The password confirmation is required',
+        },
+        notEmpty: {
+          msg: 'Please provide a value for confirmation password',
         },
       }
     }

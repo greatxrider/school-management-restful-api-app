@@ -53,27 +53,11 @@ module.exports = (sequelize) => {
     },
     estimatedTime: {
       type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'An estimated time for the course is required',
-        },
-        notEmpty: {
-          msg: 'Please provide an estimated time',
-        },
-      },
+      allowNull: true,
     },
     materialsNeeded: {
       type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'Materials needed for the course is required',
-        },
-        notEmpty: {
-          msg: 'Please provide materials needed',
-        },
-      },
+      allowNull: true,
     }
   }, {
     sequelize,
