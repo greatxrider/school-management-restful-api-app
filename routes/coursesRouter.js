@@ -53,7 +53,7 @@ coursesRouter.route('/')
       // Route that creates a new course.
       const course = await Course.create(req.body);
       // res.status(201).json({ message: 'Course successfully created!' });
-      res.status(201).location(`/api/courses/${course.id}`).end();
+      res.status(201).location(`/courses/${course.id}`).end();
     } catch (error) {
       console.log('ERROR: ', error.name);
 
