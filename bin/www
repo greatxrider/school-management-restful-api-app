@@ -23,7 +23,11 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Synchronizes the Sequelize models with the database and starts the server.
+ * Listens on the provided port on all network interfaces.
+ * 
+ * @listens server#error
+ * @listens server#listening
  */
 
 sequelize.sync().then(() => {

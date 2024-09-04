@@ -3,13 +3,25 @@
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
+/**
+ * User model definition.
+ * @module models/User
+ * @param {Object} sequelize - The Sequelize instance.
+ * @returns {Object} - The User model.
+ */
 module.exports = (sequelize) => {
+  /**
+   * Represents a User.
+   * @class
+   * @extends Model
+   */
   class User extends Model {
     /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    * Helper method for defining associations.
+    * This method is not a part of Sequelize lifecycle.
+    * The `models/index` file will call this method automatically.
+    * @param {Object} models - The models to associate with.
+    */
     static associate(models) {
       // define association here
       User.hasMany(models.Course, {

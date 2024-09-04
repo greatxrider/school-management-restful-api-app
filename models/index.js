@@ -9,6 +9,10 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+/**
+ * Initializes a new Sequelize instance.
+ * @type {Sequelize}
+ */
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -16,6 +20,9 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+/**
+ * Reads all model files in the current directory and imports them into Sequelize.
+ */
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -31,14 +38,31 @@ fs
     db[model.name] = model;
   });
 
+/**
+* Calls the associate method on each model to define associations.
+*/
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
 
+/**
+ * The Sequelize instance.
+ * @type {Sequelize}
+ */
 db.sequelize = sequelize;
+
+/**
+ * The Sequelize library.
+ * @type {Sequelize}
+ */
 db.Sequelize = Sequelize;
+
+/**
+ * The Sequelize operators.
+ * @type {Object}
+ */
 db.Op = Sequelize.Op;
 
 module.exports = db;

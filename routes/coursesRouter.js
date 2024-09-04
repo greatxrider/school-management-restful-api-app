@@ -2,48 +2,25 @@
 
 const express = require('express');
 
-// Construct a router instance.
+/**
+ * Express router to mount course related functions on.
+ * @type {Object}
+ */
+const coursesRouter = express.Router();
 const { User, Course } = require('../models');
 const { authenticateUser } = require('../middleware/auth-user');
-const coursesRouter = express.Router();
+const { asyncHandler } = require('../middleware/async-handler');
+const { fetchCourseAndCheckOwnership } = require('../middleware/fetch-and-check');
 
-// Handler function to wrap each route.
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      // Forward error to the global error handler
-      next(err);
-    }
-  };
-}
-
-// Middleware to fetch course and check ownership
-const fetchCourseAndCheckOwnership = asyncHandler(async (req, res, next) => {
-  const course = await Course.findByPk(req.params.id, {
-    attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
-    include: [
-      {
-        model: User,
-        as: 'user',
-        attributes: ['id', 'firstName', 'lastName', 'emailAddress'],
-      },
-    ],
-  });
-
-  if (course) {
-    if (course.userId === req.currentUser.id) {
-      req.course = course;
-      next();
-    } else {
-      res.status(403).json({ message: 'Forbidden: You do not own this course' });
-    }
-  } else {
-    res.status(404).json({ message: 'Course not found' });
-  }
-});
-
+/**
+ * Route that returns a list of courses.
+ * @name GET /api/courses
+ * @function
+ * @memberof module:routes/coursesRouter
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 coursesRouter.route('/')
   .get(asyncHandler(async (req, res) => {
     // Route that returns a list of courses.
@@ -61,6 +38,16 @@ coursesRouter.route('/')
     res.status(200).json(courses);
     console.log(courses.map(course => course.get({ plain: true })));
   }))
+
+  /**
+   * Route that creates a new course.
+   * @name POST /api/courses
+   * @function
+   * @memberof module:routes/coursesRouter
+   * @inner
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   */
   .post(authenticateUser, asyncHandler(async (req, res) => {
     try {
       // Route that creates a new course.
@@ -78,8 +65,17 @@ coursesRouter.route('/')
     }
   }));
 
-// Route that returns the corresponding course including the user object associated with that course
+/**
+ * Route that returns the corresponding course including the user object associated with that course.
+ */
 coursesRouter.route('/:id')
+
+  /**
+  * GET /api/courses/:id
+  * @summary Returns the course with the specified ID.
+  * @param {Object} req - The request object.
+  * @param {Object} res - The response object.
+  */
   .get(asyncHandler(async (req, res) => {
     const course = await Course.findByPk(req.params.id, {
       attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
@@ -98,6 +94,13 @@ coursesRouter.route('/:id')
       res.status(404).json({ message: 'Course not found' });
     }
   }))
+
+  /**
+   * PUT /api/courses/:id
+   * @summary Updates the course with the specified ID.
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   */
   .put(authenticateUser, fetchCourseAndCheckOwnership, asyncHandler(async (req, res) => {
     try {
       await req.course.update(req.body);
@@ -113,6 +116,13 @@ coursesRouter.route('/:id')
       }
     }
   }))
+
+  /**
+   * DELETE /api/courses/:id
+   * @summary Deletes the course with the specified ID.
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   */
   .delete(authenticateUser, fetchCourseAndCheckOwnership, asyncHandler(async (req, res) => {
     try {
       await req.course.destroy();

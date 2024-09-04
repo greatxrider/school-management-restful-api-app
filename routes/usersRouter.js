@@ -2,24 +2,24 @@
 
 const express = require('express');
 
-// Construct a router instance.
+/**
+ * Express router to mount course related functions on.
+ * @type {Object}
+ */
 const usersRouter = express.Router();
 const { User, Course } = require('../models');
 const { authenticateUser } = require('../middleware/auth-user');
+const { asyncHandler } = require('../middleware/async-handler');
 
-// Handler function to wrap each route.
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      // Forward error to the global error handler
-      next(err);
-    }
-  };
-}
-
-// Route that returns a list of users.
+/**
+ * Route that returns a list of users.
+ * @name GET /api/users
+ * @function
+ * @memberof module:routes/usersRouter
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 usersRouter.get('/', authenticateUser, asyncHandler(async (req, res) => {
   const users = await User.findAll({
     attributes: ['id', 'firstName', 'lastName', 'emailAddress'],
@@ -36,7 +36,15 @@ usersRouter.get('/', authenticateUser, asyncHandler(async (req, res) => {
   console.log(users.map(user => user.get({ plain: true })));
 }));
 
-// Route that creates a new user.
+/**
+ * Route that creates a new user.
+ * @name POST /api/users
+ * @function
+ * @memberof module:routes/usersRouter
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 usersRouter.post('/', asyncHandler(async (req, res) => {
   try {
     await User.create(req.body);

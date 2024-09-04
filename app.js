@@ -35,7 +35,9 @@ app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/courses', coursesRouter);
 
-// Test the database connection.
+/**
+ * Test the database connection.
+ */
 (async () => {
   try {
     await sequelize.authenticate();
@@ -45,14 +47,24 @@ app.use('/api/courses', coursesRouter);
   }
 })();
 
-// send 404 if no other route matched
+/**
+ * Send 404 if no other route matched.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.use((req, res) => {
   res.status(404).json({
     message: 'Route Not Found',
   });
 });
 
-// error handler
+/**
+ * Error handler.
+ * @param {Object} err - The error object.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 app.use(function (err, req, res, next) {
   if (enableGlobalErrorLogging) {
     console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
