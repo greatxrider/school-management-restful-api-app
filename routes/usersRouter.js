@@ -34,8 +34,19 @@ usersRouter.get('/', asyncHandler(async (req, res) => {
 
 // Route that creates a new user.
 usersRouter.post('/', asyncHandler(async (req, res) => {
-  await User.create(req.body);
-  res.status(201).json({ messsage: 'Account successfully created!' });
+  try {
+    await User.create(req.body);
+    res.status(201).json({ messsage: 'Account successfully created!' });
+  } catch (error) {
+    console.log('ERROR: ', error.name);
+
+    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+      const errors = error.errors.map(err => err.message);
+      res.status(400).json({ errors });
+    } else {
+      throw error;
+    }
+  }
 }));
 
 module.exports = usersRouter;

@@ -58,13 +58,6 @@ app.use(function (err, req, res, next) {
     console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
   }
 
-  // if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
-  //   const errors = err.errors.map(error => error.message);
-  //   res.status(400).json({ errors });
-  // } else {
-  //   res.status(500).json({ message: 'Internal Server Error' });
-  // }
-
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

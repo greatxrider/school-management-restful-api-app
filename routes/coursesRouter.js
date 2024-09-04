@@ -33,9 +33,20 @@ coursesRouter.route('/')
     console.log(courses.map(course => course.get({ plain: true })));
   }))
   .post(asyncHandler(async (req, res) => {
-    // Route that creates a new course.
-    await Course.create(req.body);
-    res.status(201).json({ message: 'Course successfully created!' });
+    try {
+      // Route that creates a new course.
+      await Course.create(req.body);
+      res.status(201).json({ message: 'Course successfully created!' });
+    } catch (error) {
+      console.log('ERROR: ', error.name);
+
+      if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+        const errors = error.errors.map(error => error.message);
+        res.status(400).json({ errors });
+      } else {
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
+    }
   }));
 
 // Route that returns the corresponding course including the user object associated with that course
