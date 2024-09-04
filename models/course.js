@@ -11,8 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      
     }
   }
+
   Course.init({
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
@@ -22,5 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Course',
   });
+
   return Course;
 };
