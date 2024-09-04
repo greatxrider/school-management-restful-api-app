@@ -51,7 +51,7 @@ coursesRouter.route('/')
   .post(authenticateUser, asyncHandler(async (req, res) => {
     try {
       // Route that creates a new course.
-      await Course.create(req.body);
+      const course = await Course.create(req.body);
       // res.status(201).json({ message: 'Course successfully created!' });
       res.status(201).location(`/api/courses/${course.id}`).end();
     } catch (error) {
