@@ -48,7 +48,8 @@ usersRouter.get('/', authenticateUser, asyncHandler(async (req, res) => {
 usersRouter.post('/', asyncHandler(async (req, res) => {
   try {
     await User.create(req.body);
-    res.status(201).json({ messsage: 'Account successfully created!' });
+    // res.status(201).json({ messsage: 'Account successfully created!' });
+    res.status(201).location('/').end();
   } catch (error) {
     console.log('ERROR: ', error.name);
 

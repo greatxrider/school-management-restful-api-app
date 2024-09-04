@@ -82,27 +82,27 @@ module.exports = (sequelize) => {
         }
       }
     },
-    rawPassword: {
-      type: DataTypes.VIRTUAL,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'A raw password is required',
-        },
-        notEmpty: {
-          msg: 'Please provide a raw password',
-        },
-        len: {
-          args: [8, 20],
-          msg: 'The raw password should be between 8 and 20 characters in length',
-        }
-      }
-    },
+    // rawPassword: {
+    //   type: DataTypes.VIRTUAL,
+    //   allowNull: false,
+    //   validate: {
+    //     notNull: {
+    //       msg: 'A raw password is required',
+    //     },
+    //     notEmpty: {
+    //       msg: 'Please provide a raw password',
+    //     },
+    //     len: {
+    //       args: [8, 20],
+    //       msg: 'The raw password should be between 8 and 20 characters in length',
+    //     }
+    //   }
+    // },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       set(val) {
-        if (val === this.rawPassword) {
+        if (val) {
           const hashedPassword = bcrypt.hashSync(val, 10);
           this.setDataValue('password', hashedPassword);
         }

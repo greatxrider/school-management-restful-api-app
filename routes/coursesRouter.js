@@ -52,7 +52,8 @@ coursesRouter.route('/')
     try {
       // Route that creates a new course.
       await Course.create(req.body);
-      res.status(201).json({ message: 'Course successfully created!' });
+      // res.status(201).json({ message: 'Course successfully created!' });
+      res.status(201).location(`/api/courses/${course.id}`).end();
     } catch (error) {
       console.log('ERROR: ', error.name);
 
@@ -69,7 +70,6 @@ coursesRouter.route('/')
  * Route that returns the corresponding course including the user object associated with that course.
  */
 coursesRouter.route('/:id')
-
   /**
   * GET /api/courses/:id
   * @summary Returns the course with the specified ID.
