@@ -1,3 +1,5 @@
+'use strict';
+
 var createError = require('http-errors');
 const express = require('express');
 const morgan = require('morgan');

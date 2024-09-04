@@ -1,8 +1,8 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+
+const { Model, DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
   class Course extends Model {
     /**
      * Helper method for defining associations.
@@ -11,15 +11,70 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      
+      Course.belongsTo(models.User, {
+        as: 'user',
+        foreignKey: {
+          fieldName: 'userId',
+          allowNull: false,
+        },
+      });
     }
   }
 
   Course.init({
-    title: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    estimatedTime: DataTypes.STRING,
-    materialsNeeded: DataTypes.STRING
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'A title is required',
+        },
+        notEmpty: {
+          msg: 'Please provide a title',
+        },
+      },
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'A description is required',
+        },
+        notEmpty: {
+          msg: 'Please provide a description',
+        },
+      },
+    },
+    estimatedTime: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'An estimated time for the course is required',
+        },
+        notEmpty: {
+          msg: 'Please provide an estimated time',
+        },
+      },
+    },
+    materialsNeeded: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Materials needed for the course is required',
+        },
+        notEmpty: {
+          msg: 'Please provide materials needed',
+        },
+      },
+    }
   }, {
     sequelize,
     modelName: 'Course',

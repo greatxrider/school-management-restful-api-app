@@ -1,9 +1,9 @@
 'use strict';
 
-const { Model } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class User extends Model {
     /**
      * Helper method for defining associations.
@@ -12,15 +12,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.User, {
-        as: 'users',
+      User.hasMany(models.Course, {
+        as: 'courses',
         foreignKey: {
           fieldName: 'userId',
           allowNull: false,
-        }
-      })
-    }
-  }
+        },
+      });
+    };
+  };
 
   User.init({
     id: {
