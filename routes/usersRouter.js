@@ -21,7 +21,7 @@ const { asyncHandler } = require('../middleware/async-handler');
  * @param {Object} res - The response object.
  */
 usersRouter.get('/', authenticateUser, asyncHandler(async (req, res) => {
-  const users = await User.findAll({
+  const user = await User.findByPk(req.currentUser.id, {
     attributes: ['id', 'firstName', 'lastName', 'emailAddress'],
     include: [
       {
@@ -32,8 +32,11 @@ usersRouter.get('/', authenticateUser, asyncHandler(async (req, res) => {
     ],
   });
 
-  res.status(200).json(users);
-  console.log(users.map(user => user.get({ plain: true })));
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
 }));
 
 /**

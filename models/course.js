@@ -66,11 +66,11 @@ module.exports = (sequelize) => {
       },
     },
     estimatedTime: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     materialsNeeded: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: true,
     }
   }, {
